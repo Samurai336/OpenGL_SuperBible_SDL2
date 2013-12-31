@@ -63,7 +63,7 @@ GLuint GLRenderer::compile_shaders()
     // Source code for vertex shader
     static const GLchar * vertex_shader_source[] =
     {
-        "#version 320 core                                  \n"
+        "#version 150 core                                  \n"
         "                                                   \n"
         "void main(void)                                    \n"
         "{                                                  \n"
@@ -74,7 +74,7 @@ GLuint GLRenderer::compile_shaders()
     // Source code for fragment shader
     static const GLchar * fragment_shader_source[] =
     {
-        "#version 320 core                                  \n"
+        "#version 150 core                                  \n"
         "                                                   \n"
         "out vec4 color;                                    \n"
         "                                                   \n"
