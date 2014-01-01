@@ -43,6 +43,8 @@ class GLRenderer
 
 		void printShaderLog( GLuint shader ); 
 
+		void printProgramLog( GLuint program );
+
 
 	private:
 	
