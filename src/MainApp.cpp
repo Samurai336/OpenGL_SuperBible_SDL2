@@ -44,7 +44,7 @@ MainApp* MainApp::Instance()
 MainApp::MainApp()
 {
 	MainWindow = NULL;
-	CurrentLevel = NULL; 
+	CurrentLevel = NULL;
 
 	Running = true;
 }
@@ -108,8 +108,8 @@ bool MainApp::OnInit()
 		printf("SDL_Init failed: %s\n", SDL_GetError());
         	return false;
 	}
-	
-   
+
+
 
 
     //Create out SDL window centered at said with and height
@@ -146,7 +146,7 @@ bool MainApp::OnInit()
     {
         return false;
     }
-   
+
 
     //If we got there then everything worked
 	return true;
@@ -179,7 +179,7 @@ void MainApp::OnKeyDown(SDL_Keycode sym, SDL_Keymod mod, Uint16 unicode)
 	{
 		default:
 		{
-			break; 
+			break;
 		}
 	}
 }
@@ -190,7 +190,7 @@ void MainApp::OnKeyUp(SDL_Keycode sym, SDL_Keymod mod, Uint16 unicode)
 	{
 		default:
 		{
-			break; 
+			break;
 		}
 	}
 }
@@ -231,7 +231,7 @@ void MainApp::OnRender()
     }
 
     //flip the display
-	MainRenderTarget.Render();//SDL_GetTicks()
+	MainRenderTarget.Render((float)SDL_GetTicks()/1000);//SDL_GetTicks()
 }
 
 //get this main apps render target (SOmetimes used to load textures)
