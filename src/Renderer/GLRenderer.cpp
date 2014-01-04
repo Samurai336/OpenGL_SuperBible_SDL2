@@ -73,7 +73,12 @@ GLuint GLRenderer::compile_shaders()
         "                                           \n"
         "void main (void)                           \n"
         "{                                          \n"
-        "   gl_Position = vec4(0.0, 0.0, 0.5, 1.0); \n"
+        "                                           \n"
+        "const vec4 verticies[3] = vec4[3](vec4( 0.25, -0.25, 0.5, 1.0),     \n"
+        "                                  vec4(-0.25, -0.25, 0.5, 1.0),     \n"
+        "                                  vec4( 0.25,  0.25, 0.5, 1.0));   \n"
+        "                                           \n"
+        "   gl_Position = verticies[gl_VertexID];   \n"
         "}                                          \n"
     };
 
@@ -146,7 +151,7 @@ void GLRenderer::Render(float currentTime)
     glUseProgram(rendering_program);
 
 
-    glDrawArrays(GL_POINTS, 0,1);
+    glDrawArrays(GL_TRIANGLES, 0,3);
 
 
 /*************************************************************************/
