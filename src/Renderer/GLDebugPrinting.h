@@ -1,8 +1,10 @@
 #ifndef GLDEBUGPRINTING_H_INCLUDED
 #define GLDEBUGPRINTING_H_INCLUDED
 
+
 #include <GL/glu.h>
 #include <GL/glew.h>
+#include <SDL2/SDL_opengl.h>
 #include <stdio.h>
 #include <string>
 #include <fstream>
