@@ -71,6 +71,8 @@ GLuint GLRenderer::compile_shaders()
     {
         "#version 430 core                          \n"
         "                                           \n"
+        "layout (location = 0) in vec4 offset;      \n"
+        "                                           \n"
         "void main (void)                           \n"
         "{                                          \n"
         "                                           \n"
@@ -78,7 +80,7 @@ GLuint GLRenderer::compile_shaders()
         "                                  vec4(-0.25, -0.25, 0.5, 1.0),     \n"
         "                                  vec4( 0.25,  0.25, 0.5, 1.0));   \n"
         "                                           \n"
-        "   gl_Position = verticies[gl_VertexID];   \n"
+        "   gl_Position = verticies[gl_VertexID] + offset;   \n"
         "}                                          \n"
     };
 
@@ -149,6 +151,12 @@ void GLRenderer::Render(float currentTime)
     glPointSize(40.0f);
 
     glUseProgram(rendering_program);
+
+    GLfloat attrib[] = { (float) sin(currentTime) * 0.5f,
+                         (float) cos(currentTime) * 0.6f,
+                          0.0, 0.0};
+
+    glVertexAttrib4fv(0,attrib);
 
 
     glDrawArrays(GL_TRIANGLES, 0,3);
