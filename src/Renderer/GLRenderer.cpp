@@ -72,6 +72,10 @@ GLuint GLRenderer::compile_shaders()
         "#version 430 core                          \n"
         "                                           \n"
         "layout (location = 0) in vec4 offset;      \n"
+        "layout (location = 1) in vec4 color;       \n"
+        "                                           \n"
+        "out vec4 vs_color;                         \n"
+        "                                           \n"
         "                                           \n"
         "void main (void)                           \n"
         "{                                          \n"
@@ -81,6 +85,9 @@ GLuint GLRenderer::compile_shaders()
         "                                  vec4( 0.25,  0.25, 0.5, 1.0));   \n"
         "                                           \n"
         "   gl_Position = verticies[gl_VertexID] + offset;   \n"
+        "                                           \n"
+        "                                           \n"
+        "   vs_color = color;                       \n"
         "}                                          \n"
     };
 
@@ -88,11 +95,13 @@ GLuint GLRenderer::compile_shaders()
     {
         "#version 430 core                          \n"
         "                                           \n"
+        "in vec4 vs_color;                          \n"
+        "                                           \n"
         "out vec4 color;                            \n"
         "                                           \n"
         "void main(void)                            \n"
         "{                                          \n"
-        "   color = vec4 (0.0, 0.8, 1.0, 1.0);      \n"
+        "   color = vs_color;                       \n"
         "}                                          \n"
     };
 
@@ -156,7 +165,11 @@ void GLRenderer::Render(float currentTime)
                          (float) cos(currentTime) * 0.6f,
                           0.0, 0.0};
 
+
+     GLfloat triColor[] = {1.0, 0.0, 0.0, 1.0};
+
     glVertexAttrib4fv(0,attrib);
+    glVertexAttrib4fv(1,triColor);
 
 
     glDrawArrays(GL_TRIANGLES, 0,3);
