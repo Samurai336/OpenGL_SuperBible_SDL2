@@ -74,8 +74,10 @@ GLuint GLRenderer::compile_shaders()
         "layout (location = 0) in vec4 offset;      \n"
         "layout (location = 1) in vec4 color;       \n"
         "                                           \n"
-        "out vec4 vs_color;                         \n"
-        "                                           \n"
+        "out VS_OUT                                 \n"
+        "{                                          \n"
+        "   vec4 color;                             \n"
+        "}vs_out;                                   \n"
         "                                           \n"
         "void main (void)                           \n"
         "{                                          \n"
@@ -87,7 +89,7 @@ GLuint GLRenderer::compile_shaders()
         "   gl_Position = verticies[gl_VertexID] + offset;   \n"
         "                                           \n"
         "                                           \n"
-        "   vs_color = color;                       \n"
+        "   vs_out.color = color;                   \n"
         "}                                          \n"
     };
 
@@ -95,13 +97,18 @@ GLuint GLRenderer::compile_shaders()
     {
         "#version 430 core                          \n"
         "                                           \n"
-        "in vec4 vs_color;                          \n"
+        "                                           \n"
+        "in VS_OUT                                  \n"
+        "{                                          \n"
+        "   vec4 color;                             \n"
+        "}fs_in;                                   \n"
+        "                                           \n"
         "                                           \n"
         "out vec4 color;                            \n"
         "                                           \n"
         "void main(void)                            \n"
         "{                                          \n"
-        "   color = vs_color;                       \n"
+        "   color = fs_in.color;                    \n"
         "}                                          \n"
     };
 
