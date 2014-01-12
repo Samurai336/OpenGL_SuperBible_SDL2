@@ -59,8 +59,8 @@ void GLRenderer::startup()
     glGenVertexArrays(1, &vertex_array_object);
     glBindVertexArray(vertex_array_object);
 
-    glPatchParameteri(GL_PATCH_VERTICES, 3);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPatchParameteri(GL_PATCH_VERTICES, 3);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 
@@ -109,17 +109,21 @@ GLuint GLRenderer::compile_shaders()
         "#version 430 core                          \n"
         "                                           \n"
         "                                           \n"
-        "in VS_OUT                                  \n"
-        "{                                          \n"
-        "   vec4 color;                             \n"
-        "}fs_in;                                    \n"
         "                                           \n"
         "                                           \n"
         "out vec4 color;                            \n"
         "                                           \n"
         "void main(void)                            \n"
         "{                                          \n"
-        "   color = fs_in.color;                    \n"
+        "                                           \n"
+        "    color = vec4(sin(gl_FragCoord.x * 0.25) * 0.5 + 0.5, \n"
+        "               cos(gl_FragCoord.y * 0.25) * 0.5 + 0.5, \n"
+        "               sin(gl_FragCoord.x * 0.15) * cos(gl_FragCoord.y * 0.1),  \n"
+        "               1.0);                       \n"
+        "                                           \n"
+        "                                           \n"
+        "                                           \n"
+        "                                           \n"
         "}                                          \n"
     };
 
@@ -154,10 +158,12 @@ GLuint GLRenderer::compile_shaders()
         "                                           \n"
         "void main(void)                            \n"
         "{                                          \n"
+        "                                           \n"
         "     gl_Position = (gl_TessCoord.x * gl_in[0].gl_Position) + \n"
         "                   (gl_TessCoord.y * gl_in[1].gl_Position) + \n"
         "                   (gl_TessCoord.z * gl_in[2].gl_Position); \n"
         "                                                            \n"
+        "                                           \n"
         "}                                                           \n"
     };
 
@@ -256,9 +262,9 @@ GLuint GLRenderer::compile_shaders()
 
     glAttachShader(program, vertex_shader);
     glAttachShader(program, fragment_shader);
-    glAttachShader(program, tesselation_Control_shader);
-    glAttachShader(program, tesselation_Eval_shader);
-    glAttachShader(program, Geometry_shader);
+    //glAttachShader(program, tesselation_Control_shader);
+    //glAttachShader(program, tesselation_Eval_shader);
+    //glAttachShader(program, Geometry_shader);
 
     glLinkProgram(program);
 
@@ -327,8 +333,8 @@ void GLRenderer::Render(float currentTime)
 
 
     //He fails to mention in the book to switch to patches.
-    glDrawArrays(GL_PATCHES, 0, 3);
-    //glDrawArrays(GL_TRIANGLES, 0, 3);
+    //glDrawArrays(GL_PATCHES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 
 
 /*************************************************************************/
