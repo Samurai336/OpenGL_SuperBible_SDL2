@@ -72,6 +72,7 @@ GLuint GLRenderer::compile_shaders()
 {
     GLuint vertex_shader;
     GLuint fragment_shader;
+    GLuint Geometry_shader;
     GLuint tesselation_Control_shader;
     GLuint tesselation_Eval_shader;
     GLuint program;
@@ -161,6 +162,27 @@ GLuint GLRenderer::compile_shaders()
     };
 
 
+  static const GLchar * Geometry_shader_source[] =
+    {
+        "#version 410 core                          \n"
+        "                                           \n"
+        "layout (triangles) in;                     \n"
+        "layout (points, max_vertices = 3)  out;   \n"
+        "                                           \n"
+        "void main(void)                            \n"
+        "{                                          \n"
+        "    int i;                                 \n"
+        "                                           \n"
+        "                                           \n"
+        "    for(i = 0; i< gl_in.length(); i++)     \n"
+        "    {                                      \n"
+        "        gl_Position = gl_in[i].gl_Position; \n"
+        "        EmitVertex();                     \n"
+        "    }                                      \n"
+        "                                           \n"
+        "}                                          \n"
+    };
+
     //Compile the Vertex shader
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, vertex_shader_source, NULL);
@@ -212,6 +234,22 @@ GLuint GLRenderer::compile_shaders()
         printShaderLog( tesselation_Eval_shader );
     }
 
+    Geometry_shader = glCreateShader(GL_GEOMETRY_SHADER);
+    glShaderSource(Geometry_shader,1, Geometry_shader_source, NULL );
+    glCompileShader(Geometry_shader);
+
+    GLint geoShaderCompiled = GL_FALSE;
+    glGetShaderiv(Geometry_shader, GL_COMPILE_STATUS, &geoShaderCompiled);
+    if(geoShaderCompiled != GL_TRUE)
+    {
+
+        printf( "Unable to compile Geometry shader %d!\n", Geometry_shader );
+        printShaderLog( Geometry_shader );
+    }
+
+
+
+
     //Create shader program ;
 
     program = glCreateProgram();
@@ -220,6 +258,7 @@ GLuint GLRenderer::compile_shaders()
     glAttachShader(program, fragment_shader);
     glAttachShader(program, tesselation_Control_shader);
     glAttachShader(program, tesselation_Eval_shader);
+    glAttachShader(program, Geometry_shader);
 
     glLinkProgram(program);
 
@@ -268,7 +307,7 @@ void GLRenderer::Render(float currentTime)
 
     glClearBufferfv (GL_COLOR, 0, color);
 
-    glPointSize(40.0f);
+    glPointSize(5.0f);
 
     //
 
@@ -280,7 +319,7 @@ void GLRenderer::Render(float currentTime)
                           0.0, 0.0};
 
 
-     GLfloat triColor[] = {1.0, 0.0, 0.0, 1.0};
+     GLfloat triColor[] = {0.0, 0.8, 1.0, 1.0};
 
     glVertexAttrib4fv(0,attrib);
     glVertexAttrib4fv(1,triColor);
