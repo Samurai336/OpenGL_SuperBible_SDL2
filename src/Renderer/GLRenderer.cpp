@@ -78,29 +78,30 @@ GLuint GLRenderer::compile_shaders()
     GLuint program;
 
 
-    static const GLchar * vertex_shader_source[] =
+ static const GLchar * vertex_shader_source[] =
     {
         "#version 430 core                          \n"
+	    "layout (location = 0) in vec4 offset;       \n"
         "                                           \n"
-        "layout (location = 0) in vec4 offset;      \n"
-        "layout (location = 1) in vec4 color;       \n"
+        "out vec4 vs_color;                        \n"
         "                                           \n"
-        "out VS_OUT                                 \n"
-        "{                                          \n"
-        "   vec4 color;                             \n"
-        "}vs_out;                                   \n"
+        "                                           \n"
         "                                           \n"
         "void main (void)                           \n"
         "{                                          \n"
         "                                           \n"
         "const vec4 verticies[3] = vec4[3](vec4( 0.25, -0.25, 0.5, 1.0),     \n"
         "                                  vec4(-0.25, -0.25, 0.5, 1.0),     \n"
-        "                                  vec4( 0.25,  0.25, 0.5, 1.0));   \n"
+        "                                  vec4( 0.25,  0.25, 0.5, 1.0));    \n"
         "                                           \n"
-        "   gl_Position = verticies[gl_VertexID] + offset;   \n"
+        "const vec4 colors[] = vec4[3](vec4( 1.0,  0.0, 0.0, 1.0),     \n"
+        "                              vec4( 0.0,  1.0, 0.0, 1.0),     \n"
+        "                              vec4( 0.0,  0.0, 1.0, 1.0));    \n"
         "                                           \n"
         "                                           \n"
-        "   vs_out.color = color;                   \n"
+        "gl_Position = verticies[gl_VertexID] + offset;    \n"
+        "                                           \n"
+        "vs_color = colors[gl_VertexID];             \n"
         "}                                          \n"
     };
 
@@ -108,7 +109,7 @@ GLuint GLRenderer::compile_shaders()
     {
         "#version 430 core                          \n"
         "                                           \n"
-        "                                           \n"
+        "in vec4 vs_color;                          \n"
         "                                           \n"
         "                                           \n"
         "out vec4 color;                            \n"
@@ -116,13 +117,7 @@ GLuint GLRenderer::compile_shaders()
         "void main(void)                            \n"
         "{                                          \n"
         "                                           \n"
-        "    color = vec4(sin(gl_FragCoord.x * 0.25) * 0.5 + 0.5, \n"
-        "               cos(gl_FragCoord.y * 0.25) * 0.5 + 0.5, \n"
-        "               sin(gl_FragCoord.x * 0.15) * cos(gl_FragCoord.y * 0.1),  \n"
-        "               1.0);                       \n"
-        "                                           \n"
-        "                                           \n"
-        "                                           \n"
+        "   color = vs_color;                      \n"
         "                                           \n"
         "}                                          \n"
     };
@@ -158,12 +153,10 @@ GLuint GLRenderer::compile_shaders()
         "                                           \n"
         "void main(void)                            \n"
         "{                                          \n"
-        "                                           \n"
         "     gl_Position = (gl_TessCoord.x * gl_in[0].gl_Position) + \n"
         "                   (gl_TessCoord.y * gl_in[1].gl_Position) + \n"
         "                   (gl_TessCoord.z * gl_in[2].gl_Position); \n"
         "                                                            \n"
-        "                                           \n"
         "}                                                           \n"
     };
 
@@ -262,7 +255,7 @@ GLuint GLRenderer::compile_shaders()
 
     glAttachShader(program, vertex_shader);
     glAttachShader(program, fragment_shader);
-    //glAttachShader(program, tesselation_Control_shader);
+   // glAttachShader(program, tesselation_Control_shader);
     //glAttachShader(program, tesselation_Eval_shader);
     //glAttachShader(program, Geometry_shader);
 
