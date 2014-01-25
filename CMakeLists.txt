@@ -42,7 +42,7 @@ file(GLOB renderer_files src/Renderer/*.h src/Renderer/*.cpp)
 
 file(GLOB baseClasses_files src/BaseClasses/*.h src/BaseClasses/*.cpp)
 
-file(GLOB physics_files src/Physics/*.h src/Physics/*.cpp)
+file(GLOB SBHeader_files src/SB6Include/*.h  src/SB6Include/*.cpp)
 
 SOURCE_GROUP(Renderer FILES ${renderer_files})
 
@@ -52,6 +52,7 @@ SOURCE_GROUP(BaseClasses FILES ${baseClasses_files})
 
 SOURCE_GROUP(Physics FILES ${physics_files})
 
+SOURCE_GROUP(SB6Include FILES ${SBHeader_files})
 
 
 link_directories(
@@ -67,6 +68,7 @@ if(WIN32)
         ${baseClasses_files}
         ${renderer_files}
         ${physics_files}
+        ${SBHeader_files}
 	)
 
 	SET_TARGET_PROPERTIES(${App_Name} PROPERTIES COMPILE_FLAGS "/Od /ZI")
@@ -77,7 +79,8 @@ else ()
         ${game_files}
         ${baseClasses_files}
         ${renderer_files}
-        ${physics_files}
+        ${physics_files}     
+        ${SBHeader_files}
 	)
 	if(CMAKE_COMPILER_IS_GNUCXX)
 		set(CMAKE_CXX_FLAGS "-Wno-write-strings")   
